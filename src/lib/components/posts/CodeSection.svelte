@@ -1,14 +1,37 @@
 <script lang="ts">
 	import { AppRail, AppRailTile, CodeBlock } from '@skeletonlabs/skeleton';
-	import type { Writable } from 'svelte/store';
+	import { writable, type Writable } from 'svelte/store';
+	import { onMount } from 'svelte';
 
 	import './View.css';
 	import type { FileContent } from './interfaces';
+	import { knownExtensions } from './knownExtensions';
 
 	export let storeValue: Writable<number>;
 	export let contents: string;
 	export let files: Writable<FileContent[]>;
 	export let writeMode: boolean = false;
+
+	const language = writable('yaml');
+
+	function setLanguage(index: number) {
+		language.set(
+			knownExtensions.includes($files[index]?.name.split('.').pop() as string)
+				? ($files[index]?.name.split('.').pop() as string)
+				: 'yaml'
+		);
+	}
+
+	storeValue.subscribe(setLanguage);
+
+	onMount(() => {
+		const interval = setInterval(() => {
+			if ($files[0]?.name === undefined || $files[0]?.name === '') return;
+
+			setLanguage(0);
+			clearInterval(interval);
+		}, 500);
+	});
 
 	const handleClickRailTile = (index: number) => storeValue.set(index);
 	const handleClickRemove = (index: number) =>
@@ -67,7 +90,7 @@
 				bind:value={$files[$storeValue].content}
 			/>
 
-			<CodeBlock class="flex-1" language="yaml" code={$files[$storeValue].content} />
+			<CodeBlock class="flex-1" language={$language} code={$files[$storeValue].content} />
 		</div>
 	</div>
 {:else}
@@ -78,6 +101,6 @@
 			{/each}
 		</AppRail>
 
-		<CodeBlock language="yaml" code={contents} />
+		<CodeBlock language={$language} code={contents} />
 	</div>
 {/if}
