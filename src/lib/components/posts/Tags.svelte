@@ -12,7 +12,7 @@
 {:else}
 	<div class="flex flex-row gap-2 mb-6">
 		{#each tags as tag}
-			<a href={`/?search=${tag}`} class="chip variant-filled !no-underline">{tag}</a>
+			<a href={`/?search=${tag}`} class="card chip variant-filled !no-underline">{tag}</a>
 		{/each}
 	</div>
 {/if}
