@@ -6,6 +6,7 @@
 	import { database } from '@/lib/database/sqlite';
 	import { writable } from 'svelte/store';
 	import { user } from 'github-api-helper';
+	import Search from '@/lib/components/Search.svelte';
 
 	interface PostMetadata {
 		id: string;
@@ -33,9 +34,11 @@
 			const searchResults = $db!.exec(`
 				SELECT *
 				FROM posts
-				WHERE tags LIKE '%${search}%'
-				AND active = true
-			`)[0];
+				WHERE active = true
+				${search
+					.split(',')
+					.map((tag) => `AND tags LIKE '%${tag}%'`)
+					.join('\n')}`)[0];
 
 			if (searchResults === undefined) {
 				return;
@@ -84,6 +87,8 @@
 	<title>Kube YAML tlqkf wtf</title>
 	<meta name="description" content="Kube YAML tlqkf wtf" />
 </svelte:head>
+
+<Search />
 
 <a
 	class="flex flex-row card card-hover p-4 gap-2 items-center justify-center mb-6"
