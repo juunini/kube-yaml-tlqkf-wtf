@@ -1,0 +1,36 @@
+#grid {
+	display: grid;
+	grid-template-columns: calc(50% - 1rem) calc(50% - 1rem);
+	grid-gap: 1rem;
+}
+
+#grid section {
+	padding: 1rem;
+	border: 1px solid #ccc;
+	border-radius: 0.25rem;
+	background: #ecf3ff;
+}
+
+#grid section label {
+	display: block;
+	margin-bottom: 1.5rem;
+}
+
+#grid section label span {
+	display: block;
+	margin-bottom: 0.25rem;
+}
+
+#grid section label input,
+#grid section label textarea {
+	width: 100%;
+	padding: 0.25rem;
+	border: 1px solid #ccc;
+	border-radius: 0.25rem;
+}
+
+#grid section label input:focus,
+#grid section label textarea:focus {
+	outline: none;
+	border-color: #000;
+}
