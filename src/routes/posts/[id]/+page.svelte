@@ -67,7 +67,12 @@
 		description.set(await readDescription(id));
 		files.set(await readFiles(id));
 		theme.set(currentTheme());
-		variables.set($metadata.variables?.map((variable) => ({ origin: variable.name, value: '' })));
+		variables.set(
+			$metadata.variables?.map((variable) => ({
+				origin: variable.name,
+				value: variable.default || ''
+			}))
+		);
 		author.set(await user({ id: $metadata.authorId }));
 		updated.set(
 			$metadata.created === $metadata.updated

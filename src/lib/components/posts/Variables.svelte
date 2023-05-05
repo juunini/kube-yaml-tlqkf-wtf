@@ -1,5 +1,7 @@
 <script lang="ts">
 	import { writable, type Writable } from 'svelte/store';
+	import { popup } from '@skeletonlabs/skeleton';
+
 	import type { ReplacementVariable, Variable } from './interfaces';
 
 	export let variables: Writable<Variable[]> = writable([]);
@@ -12,7 +14,8 @@
 			...prev,
 			{
 				name: '',
-				description: ''
+				description: '',
+				default: ''
 			}
 		]);
 	const handleClickVariableRemove = (index: number) =>
@@ -25,8 +28,20 @@
 {#if replacements.length !== 0}
 	{#each readonlyVariables as variable, index}
 		<div class="flex flex-row input-group input-group-divider">
-			<div class="input-group-shim">{variable.name}</div>
-			<div class="input-group-shim">{variable.description}</div>
+			<div class="input-group-shim">
+				{variable.name}
+				<button
+					type="button"
+					class="btn-icon variant-filled-surface w-6 h-6 !p-0 ml-2"
+					use:popup={{
+						event: 'hover',
+						target: `popup-${index}`,
+						placement: 'right-end'
+					}}
+				>
+					<i class="fa-solid fa-question flex-1" />
+				</button>
+			</div>
 			{#if replacements[index]}
 				<input
 					type="text"
@@ -35,6 +50,11 @@
 					bind:value={replacements[index].value}
 				/>
 			{/if}
+		</div>
+
+		<div class="card variant-filled-surface p-4" data-popup={`popup-${index}`}>
+			{variable.description}
+			<div class="arrow variant-filled-surface" />
 		</div>
 	{/each}
 {/if}
@@ -51,7 +71,7 @@
 		</h2>
 
 		{#each $variables as variable, index}
-			<div class="flex flex-row input-group input-group-divider">
+			<div class="grid grid-flow-col input-group input-group-divider">
 				<div class="input-group-shim">Name</div>
 				<input type="text" class="input" placeholder="Name" bind:value={variable.name} />
 				<div class="input-group-shim">Description</div>
@@ -61,6 +81,8 @@
 					placeholder="Description"
 					bind:value={variable.description}
 				/>
+				<div class="input-group-shim">Default</div>
+				<input type="text" class="input" placeholder="Default" bind:value={variable.default} />
 				<button
 					type="button"
 					class="btn variant-filled"

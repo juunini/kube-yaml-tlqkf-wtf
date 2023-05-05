@@ -76,7 +76,7 @@
 						title: title,
 						tags: tags,
 						authorId: author.id,
-						variables: variables,
+						variables,
 						created: post?.created.getTime() || Date.now(),
 						updated: Date.now()
 					})
