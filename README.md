@@ -26,3 +26,22 @@ bun install
 ```sh
 bun run dev
 ```
+
+## How to know `Repository ID` and `Discussion Category ID`?
+
+Enter [GitHub GraphQL API Explorer](https://docs.github.com/en/graphql/overview/explorer) and run the following query.
+
+```graphql
+query { 
+  repository(owner: "<name>", name: "<repository>") {
+    id # RepositoryID
+    name
+    discussionCategories(first: 10) {
+      nodes {
+        id # CategoryID
+        name
+      }
+    }
+  }
+}
+```
