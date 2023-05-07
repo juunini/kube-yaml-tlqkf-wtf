@@ -1,6 +1,4 @@
 <script lang="ts">
-	import { marked } from 'marked';
-
 	export let editable: boolean = false;
 	export let description: string;
 </script>
