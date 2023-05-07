@@ -21,6 +21,7 @@
 	}
 
 	const posts = writable<PostMetadata[]>([]);
+	const loading = writable(false);
 
 	onMount(async () => {
 		if ($db === null) {
@@ -31,6 +32,8 @@
 		const search = new URLSearchParams(location.search).get('search');
 
 		if (search !== '' && search !== null) {
+			loading.set(true);
+
 			const searchResults = $db!.exec(`
 				SELECT *
 				FROM posts
@@ -41,6 +44,7 @@
 					.join('\n')}`)[0];
 
 			if (searchResults === undefined) {
+				loading.set(false);
 				return;
 			}
 
@@ -61,6 +65,7 @@
 			);
 
 			posts.set(data);
+			loading.set(false);
 			return;
 		}
 
@@ -97,6 +102,23 @@
 	<span><i class="fa-solid fa-plus" /></span>
 	<span>new</span>
 </a>
+
+{#if $loading}
+	<section class="card w-full">
+		<div class="p-4 space-y-4">
+			{#each [0, 0] as i}
+				<div class="placeholder animate-pulse" />
+				<div class="grid grid-cols-4 gap-4">
+					<div class="placeholder animate-pulse" />
+					<div class="placeholder animate-pulse" />
+					<div class="placeholder animate-pulse" />
+					<div class="placeholder animate-pulse" />
+				</div>
+				<div class="placeholder animate-pulse" />
+			{/each}
+		</div>
+	</section>
+{/if}
 
 {#each $posts as post}
 	<a class="flex flex-col card card-hover p-4 gap-6" href={`/posts/${post.id}`}>
