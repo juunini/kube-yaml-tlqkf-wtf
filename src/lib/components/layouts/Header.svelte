@@ -5,11 +5,15 @@
 	import PatLoginButton from './PatLoginButton.svelte';
 	import LogoutButton from './LogoutButton.svelte';
 	import User from './User.svelte';
+
+	function handleClickLogo() {
+		location.replace('/');
+	}
 </script>
 
 <AppBar class="mb-6">
 	<svelte:fragment slot="lead">
-		<a href="/" class="font-bold">Kube YAML tlqkf wtf</a>
+		<button on:click={handleClickLogo} class="font-bold">Kube YAML tlqkf wtf</button>
 	</svelte:fragment>
 
 	<svelte:fragment slot="trail">
