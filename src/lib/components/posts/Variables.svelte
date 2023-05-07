@@ -27,7 +27,7 @@
 
 {#if replacements.length !== 0}
 	{#each readonlyVariables as variable, index}
-		<div class="flex flex-row input-group input-group-divider">
+		<div class="flex flex-row input-group input-group-divider mb-2">
 			<div class="input-group-shim">
 				{variable.name}
 				<button
