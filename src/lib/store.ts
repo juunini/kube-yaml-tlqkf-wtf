@@ -6,4 +6,6 @@ import type { GitHubUser } from './components/posts/interfaces';
 
 export const githubUser = localStorageStore<GitHubUser | null>('GitHubUserInfo', null);
 export const db = writable<Database | null>(null);
-export const localStorageDatabase = localStorageStore<number[]>('database', []);
+export const sessionStorageDatabase = {
+	set: (value: number[]) => sessionStorage.setItem('database', JSON.stringify(value))
+};

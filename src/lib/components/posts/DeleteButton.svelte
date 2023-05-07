@@ -5,7 +5,7 @@
 
 	import { migrate } from '@/lib/database/migrate';
 	import { databaseFromGitHub } from '@/lib/database/sqlite';
-	import { localStorageDatabase } from '@/lib/store';
+	import { sessionStorageDatabase } from '@/lib/store';
 	import * as config from '@/lib/config';
 
 	export let id: string;
@@ -21,7 +21,7 @@
 			database.run(`UPDATE posts SET active = false WHERE id = '${id}'`);
 
 			const data = JSON.stringify(Array.from(database.export()));
-			localStorageDatabase.set(Array.from(database.export()));
+			sessionStorageDatabase.set(Array.from(database.export()));
 
 			await commit({
 				accessToken: config.DATABASE_REPOSITORY_ACCESS_TOKEN,

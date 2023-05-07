@@ -6,7 +6,7 @@
 	import { databaseFromGitHub } from '@/lib/database/sqlite';
 	import * as config from '@/lib/config';
 	import { migrate } from '@/lib/database/migrate';
-	import { localStorageDatabase, githubUser } from '@/lib/store';
+	import { sessionStorageDatabase, githubUser } from '@/lib/store';
 	import type { FileContent, Variable } from './interfaces';
 	import { Post } from '@/lib/database/post.entity';
 
@@ -50,7 +50,7 @@
 		const post = Post.getById(database, id);
 
 		const data = JSON.stringify(Array.from(database.export()));
-		localStorageDatabase.set(Array.from(database.export()));
+		sessionStorageDatabase.set(Array.from(database.export()));
 
 		await commit({
 			accessToken: config.DATABASE_REPOSITORY_ACCESS_TOKEN,

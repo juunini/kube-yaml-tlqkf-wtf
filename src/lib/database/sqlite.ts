@@ -2,7 +2,7 @@ import initSqlJs, { type Database } from 'sql.js';
 import { commit, read, type ReadFileResponse } from 'github-api-helper';
 
 import * as config from '@/lib/config';
-import { localStorageDatabase } from '../store';
+import { sessionStorageDatabase } from '../store';
 
 let SQL: initSqlJs.SqlJsStatic;
 
@@ -15,7 +15,7 @@ async function initSQL() {
 export async function database(): Promise<Database> {
 	await initSQL();
 
-	const data = localStorage.getItem('database');
+	const data = sessionStorage.getItem('database');
 
 	if (data !== null) {
 		return new SQL.Database(Uint8Array.from(JSON.parse(data)));
@@ -36,14 +36,14 @@ export async function databaseFromGitHub() {
 	})) as ReadFileResponse;
 
 	const content = window.atob(response.content);
-	localStorageDatabase.set(JSON.parse(content));
+	sessionStorageDatabase.set(JSON.parse(content));
 	return new SQL.Database(Uint8Array.from(JSON.parse(content)));
 }
 
 export async function saveDatabase(database: Database): Promise<void> {
 	const data = JSON.stringify(Array.from(database.export()));
 
-	localStorageDatabase.set(Array.from(database.export()));
+	sessionStorageDatabase.set(Array.from(database.export()));
 
 	await commitDatabase(data);
 }
